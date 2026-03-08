@@ -1,0 +1,28 @@
+﻿# LaTeX intermediates
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Local scratch
+scratch/*.txt
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+
+# Avoid duplicate compiled PDFs in source folders
+chapters/**/slides/*.pdf
+chapters/**/notes/*.pdf
+
+# Build directory artifacts (chapter-local)
+chapters/**/build/*
+!chapters/**/build/.gitkeep
+
+# Google Docs link files
+*.gdoc
