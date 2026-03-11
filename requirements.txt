@@ -1,0 +1,20 @@
+# Core environment for this class repo on Python 3.10.
+# The upstream example repo includes CUDA-specific packages that are not suitable
+# for this macOS-oriented class environment, so this file pins a CPU-friendly set.
+
+ipykernel==6.29.5
+jupyterlab==4.5.5
+notebook==7.5.0
+numpy==1.26.4
+scipy==1.12.0
+pandas==2.2.3
+matplotlib==3.9.2
+seaborn==0.13.2
+networkx==2.8.8
+scikit-learn==1.5.2
+gensim==4.3.3
+node2vec==0.4.6
+torch==2.2.2
+torchvision==0.17.2
+torchaudio==2.2.2
+torch-geometric==2.5.3

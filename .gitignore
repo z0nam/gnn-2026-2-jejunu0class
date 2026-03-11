@@ -15,6 +15,7 @@ scratch/*.txt
 # OS/editor files
 .DS_Store
 Thumbs.db
+.vscode/
 
 # Avoid duplicate compiled PDFs in source folders
 chapters/**/slides/*.pdf
@@ -26,3 +27,15 @@ chapters/**/build/*
 
 # Google Docs link files
 *.gdoc
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Python version managers
+.python-version

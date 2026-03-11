@@ -197,85 +197,187 @@ edge\_id & src\_node\_id & dst\_node\_id \\
 
 \begin{frame}{왜 GNN인가?}
 \begin{itemize}
+  \item 기존 ML과의 차이: 기존 ML은 노드 feature에만 집중하는 반면, GNN은 노드 특징과 관계 구조를 함께 활용
+  \item 기존 그래프이론과의 차이: 그래프 이론은 주로 그래프의 수학적 성질과 알고리즘에 초점, GNN은 그래프 구조를 활용한 표현 학습과 예측에 초점
   \item 이웃 정보를 반복 집계(message passing)
   \item 노드 특징 + 관계 구조를 함께 반영
   \item 대규모/고복잡도 문제에서 표현학습에 유리
+  \item 기존 graph ML은 handcrafed features + shallow models이 많았지만, GNN은 end-to-end 학습 가능한 deep architecture로 발전
+  \item GNN은 complex graph data에서 높은 표현력과 일반화 능력을 보여주며, 다양한 도메인에서 state-of-the-art 성능 달성
+  \item 하지만 GNN은 충분한 데이터가 필요, 복잡한 문제에는 효과적이나 작은 데이터셋의 간단한 문제는 기존 ML이 더 적합할 수 있음
 \end{itemize}
-\[
-h_v^{(k)} = \phi\!\left(h_v^{(k-1)},\;\bigoplus_{u\in\mathcal{N}(v)}\psi(h_u^{(k-1)},e_{uv})\right)
-\]
-\centering
-\begin{tikzpicture}[>=Stealth,scale=0.8,every node/.style={transform shape}]
-\node[circle,draw,fill=orange!20] (v) at (0,0) {$v$};
-\node[circle,draw] (u1) at (-1.4,1.1) {$u_1$};
-\node[circle,draw] (u2) at (1.4,1.1) {$u_2$};
-\node[circle,draw] (u3) at (-1.4,-1.1) {$u_3$};
-\node[circle,draw] (u4) at (1.4,-1.1) {$u_4$};
-\draw[->,thick] (u1)--(v);
-\draw[->,thick] (u2)--(v);
-\draw[->,thick] (u3)--(v);
-\draw[->,thick] (u4)--(v);
-\end{tikzpicture}
+% \[
+% h_v^{(k)} = \phi\!\left(h_v^{(k-1)},\;\bigoplus_{u\in\mathcal{N}(v)}\psi(h_u^{(k-1)},e_{uv})\right)
+% \]
+% \centering
+% \begin{tikzpicture}[>=Stealth,scale=0.8,every node/.style={transform shape}]
+% \node[circle,draw,fill=orange!20] (v) at (0,0) {$v$};
+% \node[circle,draw] (u1) at (-1.4,1.1) {$u_1$};
+% \node[circle,draw] (u2) at (1.4,1.1) {$u_2$};
+% \node[circle,draw] (u3) at (-1.4,-1.1) {$u_3$};
+% \node[circle,draw] (u4) at (1.4,-1.1) {$u_4$};
+% \draw[->,thick] (u1)--(v);
+% \draw[->,thick] (u2)--(v);
+% \draw[->,thick] (u3)--(v);
+% \draw[->,thick] (u4)--(v);
+% \end{tikzpicture}
 \end{frame}
 
-\begin{frame}{Chapter 1 정리}
-\begin{block}{핵심}
-그래프는 \textbf{속성 + 관계}를 함께 학습하기 위한 데이터 표현이며,
-GNN은 이를 위한 대표 딥러닝 아키텍처이다.
-\end{block}
-\begin{itemize}
-  \item 그래프 표현의 필요성
-  \item 그래프 학습 과제 4종
-  \item GNN의 message passing 관점
-\end{itemize}
-\end{frame}
+% \begin{frame}{Chapter 1 정리}
+% \begin{block}{핵심}
+% 그래프는 \textbf{속성 + 관계}를 함께 학습하기 위한 데이터 표현이며,
+% GNN은 이를 위한 대표 딥러닝 아키텍처이다.
+% \end{block}
+% \begin{itemize}
+%   \item 그래프 표현의 필요성
+%   \item 그래프 학습 과제 4종
+%   \item GNN의 message passing 관점
+% \end{itemize}
+% \end{frame}
 
 \section{Chapter 2: Graph Theory for Graph Neural Networks}
 
 \begin{frame}{그래프의 기본 성질}
-\begin{columns}
-\begin{column}{0.5\textwidth}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.32\textwidth}
 \begin{itemize}
   \item Directed vs Undirected
   \item Weighted vs Unweighted
   \item Connected vs Disconnected
 \end{itemize}
 \end{column}
-\begin{column}{0.5\textwidth}
-\begin{tikzpicture}[>=Stealth,scale=0.72,every node/.style={transform shape}]
-\node[circle,draw] (a) at (0,0) {A};
-\node[circle,draw] (b) at (1.4,0.9) {B};
-\node[circle,draw] (c) at (1.4,-0.9) {C};
-\draw[->] (a)--(b);
-\draw (a)--node[below]{3.1}(c);
-\end{tikzpicture}
+\begin{column}{0.68\textwidth}
+\centering
+\begin{tabular}{ccc}
+\textbf{Undirected} & \textbf{Directed} & \textbf{Weighted} \\
+\IfFileExists{images/ch02_undirected_graph_from_notebook.png}{%
+  \includegraphics[width=0.28\linewidth]{images/ch02_undirected_graph_from_notebook.png}
+}{\fbox{\scriptsize undirected}} &
+\IfFileExists{images/ch02_directed_graph_from_notebook.png}{%
+  \includegraphics[width=0.28\linewidth]{images/ch02_directed_graph_from_notebook.png}
+}{\fbox{\scriptsize directed}} &
+\IfFileExists{images/ch02_weighted_graph_from_notebook.png}{%
+  \includegraphics[width=0.28\linewidth]{images/ch02_weighted_graph_from_notebook.png}
+}{\fbox{\scriptsize weighted}}
+\end{tabular}
+\vspace{0.6em}
+
+\textbf{Disconnected example}\\[0.2em]
+\IfFileExists{images/ch02_fig2-4.png}{%
+  \includegraphics[width=0.36\linewidth]{images/ch02_fig2-4.png}
+}{\fbox{\scriptsize disconnected}}
+\vspace{0.35em}
+
+\scriptsize
+같은 노드 집합이라도 edge의 방향, 가중치, 연결성에 따라 그래프의 의미와 해석이 달라진다.
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{중요 그래프 유형}
+\begin{frame}{네트워크 구조}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.56\textwidth}
+\IfFileExists{images/ch02_undirected_graph_from_notebook.png}{%
+  \includegraphics[width=\linewidth]{images/ch02_undirected_graph_from_notebook.png}
+}{%
+  \fbox{\parbox{0.9\linewidth}{\centering
+  \texttt{images/ch02\_undirected\_graph\_from\_notebook.png}}}
+}
+\end{column}
+\begin{column}{0.42\textwidth}
+\small
 \begin{itemize}
-  \item Tree / Rooted Tree
-  \item DAG
-  \item Bipartite Graph
-  \item Complete Graph
+  \item Chapter 2 노트북에서 \texttt{networkx}로 만든 무방향 그래프 결과
+  \item 중심 노드 A에서 B, C로 연결되고, 다시 하위 노드로 퍼지는 트리형 구조
+  \item 이 한 장의 그림으로 node, edge, degree, path 개념을 함께 설명할 수 있다
+  \item 이후 GNN에서는 이런 연결 구조를 따라 이웃 정보가 전달된다
 \end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{NetworkX 코드 예시: 그래프 생성과 해석}
+\begin{lstlisting}
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# 무방향 그래프를 하나 만든다.
+G = nx.Graph()
+
+# 각 튜플은 두 노드 사이의 연결(edge)을 뜻한다.
+G.add_edges_from([
+    ("A", "B"), ("A", "C"),
+    ("B", "D"), ("B", "E"),
+    ("C", "F"), ("C", "G"),
+])
+
+# 노드 A의 차수(degree)는 연결된 이웃의 수다.
+print(f"deg(A) = {G.degree['A']}")
+
+# 시각화용 배치를 계산한 뒤 그래프를 그린다.
+pos = nx.spring_layout(G, seed=0)
+plt.axis("off")
+nx.draw_networkx(G, pos=pos, node_size=600, font_color="white")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{코드가 그래프 이론과 연결되는 방식}
+\small
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.52\textwidth}
+\begin{itemize}
+  \item \texttt{nx.Graph()}는 방향이 없는 그래프를 만든다
+  \item \texttt{add\_edges\_from()}은 edge list 표현을 코드로 옮긴 것이다
+  \item \texttt{G.degree['A']}는 노드 A의 degree를 바로 계산한다
+  \item \texttt{spring\_layout}은 연결된 노드가 가깝게 보이도록 배치한다
+\end{itemize}
+\end{column}
+\begin{column}{0.44\textwidth}
+\IfFileExists{images/ch02_weighted_graph_from_notebook.png}{%
+  \includegraphics[width=\linewidth]{images/ch02_weighted_graph_from_notebook.png}
+}{%
+  \fbox{\parbox{0.9\linewidth}{\centering
+  \texttt{images/ch02\_weighted\_graph\_from\_notebook.png}}}
+}
+\vspace{0.4em}
+\scriptsize
+가중치 그래프를 쓰면 edge마다 중요도나 비용을 추가로 해석할 수 있다.
+\end{column}
+\end{columns}
+\vspace{0.4em}
+\footnotesize
+
+\end{frame}
+
+\begin{frame}{중요 그래프 유형}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.36\textwidth}
+  \scriptsize
+\begin{itemize}
+  \item Tree / Rooted Tree: 트리는 사이클이 없는 연결 그래프. 루트 트리는 트리의 한 노드를 루트로 지정한 그래프
+  \item DAG: 유향+사이클 없는 그래프. 트리보다 일반적이며, 순서/의존성 표현에 유용
+  \item Bipartite Graph: 노드 집합이 두 개로 나뉘고, 같은 집합 내에서는 엣지가 없는 그래프. 예: 사용자-상품 네트워크
+  \item Complete Graph: 모든 노드가 서로 연결된 그래프. 예: 소셜 네트워크에서 모든 사람이 친구인 경우
+\end{itemize}
+\vspace{0.4em}
+\scriptsize
+각 유형은 특정 도메인과 문제 유형에서 자주 등장하며, GNN 모델링 시에도 구조적 제약으로 활용될 수 있음
+\end{column}
+\begin{column}{0.5\textwidth}
 \centering
-\begin{tikzpicture}[scale=0.75,every node/.style={transform shape}]
-\node[draw,rounded corners,fill=green!10] (t) at (0,0.8) {Tree};
-\node[draw,rounded corners,fill=green!10] (rt) at (2.8,0.8) {Rooted Tree};
-\node[draw,rounded corners,fill=green!10] (dag) at (5.6,0.8) {DAG};
-\node[draw,rounded corners,fill=green!10] (bi) at (1.4,-0.8) {Bipartite};
-\node[draw,rounded corners,fill=green!10] (k) at (4.2,-0.8) {Complete};
-\draw[->] (t)--(bi);
-\draw[->] (rt)--(dag);
-\draw[->] (dag)--(k);
-\end{tikzpicture}
+\IfFileExists{images/ch02_fig2-5.png}{%
+  \includegraphics[width=\linewidth]{images/ch02_fig2-5.png}
+}{%
+  \fbox{\parbox{0.9\linewidth}{\centering
+  \texttt{images/ch02\_fig2-5.png}}}
+}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{기초 객체와 측도}
 \begin{itemize}
-  \item Degree: $\deg(v)$, Directed: $\deg^-(v),\deg^+(v)$
+  \item Degree: $\deg(v)$, Directed(-:in, +:out): $\deg^-(v),\deg^+(v)$
   \item Path, Cycle, Acyclic
   \item Centrality:
   \begin{itemize}
@@ -289,6 +391,110 @@ GNN은 이를 위한 대표 딥러닝 아키텍처이다.
 \rho_{\text{dir}}=\frac{|E|}{|V|(|V|-1)}
 \]
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{IPYNB 예제: Degree 계산}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.58\textwidth}
+\begin{lstlisting}
+G = nx.Graph()
+G.add_edges_from([
+    ("A", "B"), ("A", "C"),
+    ("B", "D"), ("B", "E"),
+    ("C", "F"), ("C", "G"),
+])
+
+# 무방향 그래프에서 degree는
+# 해당 노드에 연결된 이웃 수다.
+print(f"deg(A) = {G.degree['A']}")
+
+DG = nx.DiGraph()
+DG.add_edges_from([
+    ("A", "B"), ("A", "C"),
+    ("B", "D"), ("B", "E"),
+    ("C", "F"), ("C", "G"),
+])
+
+# 방향 그래프에서는 in/out degree를 구분한다.
+print(f"deg^-(A) = {DG.in_degree['A']}")
+print(f"deg^+(A) = {DG.out_degree['A']}")
+\end{lstlisting}
+\end{column}
+\begin{column}{0.38\textwidth}
+\small
+\textbf{실행 결과}
+\begin{verbatim}
+deg(A) = 2
+deg^-(A) = 0
+deg^+(A) = 2
+\end{verbatim}
+\vspace{0.4em}
+\begin{itemize}
+  \item A는 B, C와 연결되어 degree가 2
+  \item 방향 그래프에서는 들어오는 엣지와 나가는 엣지를 분리해 본다
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{IPYNB 예제: Centrality 비교}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.56\textwidth}
+\begin{lstlisting}
+# 같은 그래프에서 대표 centrality를 계산한다.
+print(f"Degree centrality      = "
+      f"{nx.degree_centrality(G)}")
+print(f"Closeness centrality   = "
+      f"{nx.closeness_centrality(G)}")
+print(f"Betweenness centrality = "
+      f"{nx.betweenness_centrality(G)}")
+\end{lstlisting}
+\end{column}
+\begin{column}{0.4\textwidth}
+\scriptsize
+\textbf{핵심 해석}
+\begin{itemize}
+  \item Degree centrality: 직접 연결이 많은 노드가 큼
+  \item Closeness centrality: 다른 노드까지 평균 거리가 짧을수록 큼
+  \item Betweenness centrality: 최단경로를 자주 중개하는 노드가 큼
+  \item 이 예제에서는 중심부에 있는 A, B, C가 말단 노드보다 더 중요하게 측정된다
+\end{itemize}
+\end{column}
+\end{columns}
+\vspace{0.4em}
+\footnotesize
+노트북 출력에서도 A, B, C의 centrality 값이 D, E, F, G보다 높게 나온다.
+\end{frame}
+
+\begin{frame}[fragile]{IPYNB 확장 예제: Density 계산}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.56\textwidth}
+\begin{lstlisting}
+# 같은 무방향 그래프의 밀도를 계산한다.
+num_nodes = G.number_of_nodes()
+num_edges = G.number_of_edges()
+
+print(f"|V| = {num_nodes}, |E| = {num_edges}")
+
+# networkx는 density를 바로 계산해 준다.
+print(f"density = {nx.density(G):.3f}")
+\end{lstlisting}
+\end{column}
+\begin{column}{0.4\textwidth}
+\small
+\textbf{실행 결과}
+\begin{verbatim}
+|V| = 7, |E| = 6
+density = 0.286
+\end{verbatim}
+\vspace{0.4em}
+\begin{itemize}
+  \item 가능한 전체 연결 수 대비 실제 연결 수의 비율
+  \item 희소 그래프일수록 density가 낮다
+  \item 실제 그래프 데이터는 대개 dense보다 sparse에 가깝다
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{그래프 표현 방식 비교}
@@ -307,23 +513,93 @@ Adjacency List & 공간 $O(|V|+|E|)$ & 엣지 조회는 Matrix보다 느릴 수 
 \end{table}
 \end{frame}
 
+\begin{frame}{Adjacency Matrix 설명}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.4\textwidth}
+\small
+\begin{itemize}
+  \item 인접 행렬은 노드 간 연결 여부를 $|V| \times |V|$ 행렬로 저장한다
+  \item 노드 $i$와 $j$가 연결되어 있으면 $A_{ij}=1$, 아니면 0
+  \item 가중치 그래프라면 0/1 대신 weight 값을 넣을 수 있다
+  \item 장점: 특정 엣지 존재 여부를 즉시 확인 가능
+  \item 단점: 희소 그래프에서도 공간이 많이 든다
+\end{itemize}
+\end{column}
+\begin{column}{0.56\textwidth}
+\centering
+\IfFileExists{images/ch02_fig2-6.png}{%
+  \includegraphics[width=\linewidth]{images/ch02_fig2-6.png}
+}{%
+  \fbox{\parbox{0.9\linewidth}{\centering
+  \texttt{images/ch02\_fig2-6.png}}}
+}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{IPYNB 예제: Adjacency Matrix / Edge List / Adjacency List}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.58\textwidth}
+\begin{lstlisting}
+# 같은 그래프를 세 가지 표현으로 저장할 수 있다.
+adj = [[0,1,1,0,0,0,0],
+       [1,0,0,1,1,0,0],
+       [1,0,0,0,0,1,1],
+       [0,1,0,0,0,0,0],
+       [0,1,0,0,0,0,0],
+       [0,0,1,0,0,0,0],
+       [0,0,1,0,0,0,0]]
+
+edge_list = [(0, 1), (0, 2), (1, 3),
+             (1, 4), (2, 5), (2, 6)]
+
+adj_list = {
+    0: [1, 2],
+    1: [0, 3, 4],
+    2: [0, 5, 6],
+    3: [1], 4: [1], 5: [2], 6: [2]
+}
+\end{lstlisting}
+\end{column}
+\begin{column}{0.38\textwidth}
+\small
+\begin{itemize}
+  \item \texttt{adj}: 엣지 존재 여부를 표처럼 확인 가능
+  \item \texttt{edge\_list}: 저장이 단순하고 직관적
+  \item \texttt{adj\_list}: 실제 이웃 탐색에 가장 자주 쓰임
+\end{itemize}
+\vspace{0.4em}
+\scriptsize
+같은 그래프라도 목적에 따라 표현 방식을 다르게 선택한다.
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
 \begin{frame}{BFS vs DFS}
-\begin{columns}
-\begin{column}{0.5\textwidth}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.48\textwidth}
 \textbf{BFS}
 \begin{itemize}
   \item Queue
   \item 레벨 순회
   \item 무가중치 최단경로 유리
 \end{itemize}
+\IfFileExists{images/ch02_fig2-7_BFS.png}{%
+  \includegraphics[width=\linewidth]{images/ch02_fig2-7_BFS.png}
+}{\fbox{\scriptsize BFS figure}}
 \end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.48\textwidth}
 \textbf{DFS}
 \begin{itemize}
   \item Stack/Recursion
   \item 깊이 우선 + 백트래킹
   \item 사이클 탐지/위상정렬 기반
 \end{itemize}
+\IfFileExists{images/ch02_fig2-8_DFS.png}{%
+  \includegraphics[width=\linewidth]{images/ch02_fig2-8_DFS.png}
+}{\fbox{\scriptsize DFS figure}}
 \end{column}
 \end{columns}
 \vspace{0.3em}
@@ -331,17 +607,60 @@ Adjacency List & 공간 $O(|V|+|E|)$ & 엣지 조회는 Matrix보다 느릴 수 
 시간복잡도: BFS/DFS 모두 $O(|V|+|E|)$
 \end{frame}
 
-\begin{frame}{Chapter 2 정리}
+\begin{frame}[fragile]{BFS와 DFS 알고리즘}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.56\textwidth}
+\begin{lstlisting}
+def bfs(graph, node):
+    visited, queue = [node], [node]
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.append(neighbor)
+                queue.append(neighbor)
+    return visited
+
+def dfs(visited, graph, node):
+    if node not in visited:
+        visited.append(node)
+        for neighbor in graph[node]:
+            visited = dfs(visited, graph, neighbor)
+    return visited
+\end{lstlisting}
+\end{column}
+\begin{column}{0.4\textwidth}
+\small
+\textbf{노트북 실행 결과}
+\begin{verbatim}
+bfs(G, 'A')
+['A', 'B', 'C',
+ 'D', 'E', 'F', 'G']
+
+dfs([], G, 'A')
+['A', 'B', 'D',
+ 'E', 'C', 'F', 'G']
+\end{verbatim}
+\vspace{0.3em}
 \begin{itemize}
-  \item 그래프 성질: 방향성/가중치/연결성
-  \item 그래프 유형: Tree, DAG, Bipartite, Complete
-  \item 핵심 개념: Degree, Path, Centrality, Density
-  \item 표현 방식과 탐색 알고리즘의 트레이드오프
+  \item BFS는 가까운 레벨부터 넓게 방문
+  \item DFS는 한 경로를 끝까지 따라간 뒤 되돌아온다
 \end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
-\section{마무리}
-\begin{frame}{핵심 Takeaways}
+% \begin{frame}{Chapter 2 정리}
+% \begin{itemize}
+%   \item 그래프 성질: 방향성/가중치/연결성
+%   \item 그래프 유형: Tree, DAG, Bipartite, Complete
+%   \item 핵심 개념: Degree, Path, Centrality, Density
+%   \item 표현 방식과 탐색 알고리즘의 트레이드오프
+% \end{itemize}
+% \end{frame}
+
+\section{요약}
+\begin{frame}{1, 2장 핵심 요약}
 \begin{enumerate}
   \item 그래프 학습의 본질은 관계 구조 활용
   \item GNN의 본질은 이웃 집계 기반 표현학습
@@ -349,6 +668,7 @@ Adjacency List & 공간 $O(|V|+|E|)$ & 엣지 조회는 Matrix보다 느릴 수 
 \end{enumerate}
 \end{frame}
 
-
-
-
+\begin{frame}
+\huge\centering
+감사합니다!
+\end{frame}
