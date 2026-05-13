@@ -28,6 +28,23 @@ chapters/**/build/*
 # Google Docs link files
 *.gdoc
 
+# Reference source texts with copyright risk
+references/books/*.pdf
+references/books/*.epub
+references/books/*.mobi
+
+# Downloaded presentation PDFs from other students (copyright risk)
+chapters/ch04_downloaded/
+chapters/ch05-06/
+
+# Auto-downloaded datasets from practice notebooks
+practice/hands_on_gnn_examples/**/Cora/
+practice/hands_on_gnn_examples/**/CiteSeer/
+practice/hands_on_gnn_examples/**/ml-100k/
+practice/hands_on_gnn_examples/**/chameleon/
+practice/hands_on_gnn_examples/**/wikipedia/
+practice/hands_on_gnn_examples/**/data/
+
 # Python environments and caches
 .venv/
 venv/

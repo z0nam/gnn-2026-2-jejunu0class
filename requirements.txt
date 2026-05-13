@@ -1,15 +1,20 @@
 # Core environment for this class repo on Python 3.10.
 # The upstream example repo includes CUDA-specific packages that are not suitable
 # for this macOS-oriented class environment, so this file pins a CPU-friendly set.
+# Notebook work for Chapters 5-7 relies on PyTorch Geometric. `torch` itself is
+# installed from this file, while some Chapter 7 examples may additionally need
+# the compiled PyG extension wheels listed in the note at the bottom.
 
 ipykernel==6.29.5
 jupyterlab==4.5.5
 notebook==7.5.0
+ipywidgets==8.1.5
 numpy==1.26.4
 scipy==1.12.0
 pandas==2.2.3
 matplotlib==3.9.2
 seaborn==0.13.2
+tqdm==4.67.1
 networkx==2.8.8
 scikit-learn==1.5.2
 gensim==4.3.3
@@ -18,3 +23,16 @@ torch==2.2.2
 torchvision==0.17.2
 torchaudio==2.2.2
 torch-geometric==2.5.3
+
+# Chapter 7 note:
+# The original notebook also installs `torch-scatter`, `torch-sparse`,
+# `torch-cluster`, and `torch-spline-conv`. Those packages are platform-specific
+# compiled wheels, so keep them as an explicit follow-up install instead of
+# forcing a source build from `pip install -r requirements.txt`.
+#
+# After installing this file, if the Chapter 7 notebook still complains about a
+# missing PyG backend package, install the matching wheels for the current torch
+# build from `data.pyg.org`. For this repo's pinned torch 2.2.x CPU setup:
+#
+#   .venv/bin/pip install torch-scatter torch-sparse torch-cluster \
+#     torch-spline-conv -f https://data.pyg.org/whl/torch-2.2.0+cpu.html
