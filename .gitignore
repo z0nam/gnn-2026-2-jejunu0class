@@ -45,6 +45,15 @@ practice/hands_on_gnn_examples/**/chameleon/
 practice/hands_on_gnn_examples/**/wikipedia/
 practice/hands_on_gnn_examples/**/data/
 
+# Same datasets when they appear inside chapter folders
+chapters/**/practice/Cora/
+chapters/**/practice/CiteSeer/
+chapters/**/practice/PROTEINS/
+chapters/**/practice/ml-100k/
+chapters/**/practice/chameleon/
+chapters/**/practice/wikipedia/
+chapters/**/practice/data/
+
 # Python environments and caches
 .venv/
 venv/
