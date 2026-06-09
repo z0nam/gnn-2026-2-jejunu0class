@@ -16,6 +16,7 @@
 ## 현재 담당 반영
 - 길준민: `chapters/ch01_ch02_graph_learning_and_theory/`
 - Chapter 3 초안: `chapters/ch03_deepwalk_representation_learning/`
+- Chapter 7 초안: `chapters/ch07_graph_attention_networks/`
 
 ## 협업 권장 네이밍
 - 챕터 단위 폴더: `ch03_name`, `ch04_name`, ...
