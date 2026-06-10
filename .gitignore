@@ -42,6 +42,7 @@ chapters/ch05-06/
 # Auto-downloaded datasets from practice notebooks
 practice/hands_on_gnn_examples/**/Cora/
 practice/hands_on_gnn_examples/**/CiteSeer/
+practice/hands_on_gnn_examples/**/PROTEINS/
 practice/hands_on_gnn_examples/**/ml-100k/
 practice/hands_on_gnn_examples/**/chameleon/
 practice/hands_on_gnn_examples/**/wikipedia/
