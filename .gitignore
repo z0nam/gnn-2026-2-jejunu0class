@@ -8,6 +8,8 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.vrb
+*.xdv
 
 # Local scratch
 scratch/*.txt
