@@ -35,8 +35,8 @@
     \item \textbf{미래 설정}: 그래프가 자라는 중 (친구 추천) — population = 미래의 그래프
   \end{itemize}
   \item 노드 집합 $V$는 \textbf{완전 관측 전제} (transductive) — 새 노드 등장은 별도 설정 ($\to$ SEAL 복선)
-  \item 벤치마크의 뒤틀림: 정답 그래프를 알면서 \texttt{RandomLinkSplit}으로 \emph{일부러 숨김} = \textbf{MCAR} 가정. 현실 결측은 대개 \textbf{MNAR}(편향) $\to$ 벤치마크가 실전을 과대평가할 수 있음
-  \item 음성 라벨도 사실 없음: 비관측 쌍 = 진짜 비엣지 \emph{or} 결측 엣지 — \textbf{PU-learning} 구조
+  \item 벤치마크의 뒤틀림: 정답 그래프를 알면서 \texttt{RandomLinkSplit}으로 \emph{일부러 숨김} = \textbf{MCAR}(Missing Completely At Random) 가정. 현실 결측은 대개 \textbf{MNAR}(Missing Not At Random — 결측이 특정 영역에 몰림) $\to$ 벤치마크가 실전을 과대평가할 수 있음
+  \item 음성 라벨도 사실 없음: 비관측 쌍 = 진짜 비엣지 \emph{or} 결측 엣지 — \textbf{PU-learning}(Positive-Unlabeled) 구조
 \end{itemize}
 \end{frame}
 
@@ -112,8 +112,8 @@ transform = RandomLinkSplit(
 \small
 왜 \textbf{순위 기반} 지표인가 — 확정 음성 라벨이 없고(PU 구조), 임계값은 응용마다 다르다.
 \begin{itemize}
-  \item \textbf{AUC} $= P\bigl(s(\text{무작위 양성}) > s(\text{무작위 음성})\bigr)$ — 양성·음성 쌍 대결에서 양성이 이길 확률. $0.5$ = 무작위, $1.0$ = 완벽한 분리
-  \item \textbf{AP} = 점수 내림차순으로 읽어내려가며 양성을 만날 때마다 그 시점의 precision을 평균 — \emph{순위 상위권 오염에 민감}
+  \item \textbf{AUC}(Area Under the ROC Curve) $= P\bigl(s(\text{무작위 양성}) > s(\text{무작위 음성})\bigr)$ — 양성·음성 쌍 대결에서 양성이 이길 확률. $0.5$ = 무작위, $1.0$ = 완벽한 분리
+  \item \textbf{AP}(Average Precision) = 점수 내림차순으로 읽어내려가며 양성을 만날 때마다 그 시점의 precision을 평균 — \emph{순위 상위권 오염에 민감}
 \end{itemize}
 \vspace{0.3em}
 \textbf{손계산 예시} (양성 3, 음성 3) — 점수순: P(.9), N(.7), P(.6), P(.4), N(.3), N(.2)
@@ -544,7 +544,7 @@ data = Data(x=node_x, z=z, edge_index=sub_edge_index, y=y)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{DGCNN: SEAL의 분류기}
+\begin{frame}{DGCNN(Deep Graph CNN): SEAL의 분류기}
 4-layer GCN → \textbf{SortPooling} → 1D CNN → Dense
 \begin{itemize}
   \item \textbf{GCN layers}: 32 → 32 → 32 → 1 채널, \texttt{tanh} 활성, 모두 \emph{concat}
